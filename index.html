@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <title>AngularJS v=1.8</title>
+    <style>
+        iframe{
+            border: none;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <div ng-app="myApp">
+      <label>Name:</label>
+      <input type="text" ng-model="yourName" placeholder="Enter a name here">
+      <input type="text" ng-model="calculator" placeholder="1+1">
+
+      <hr>
+      <h1>Hello {{yourName | uppercase}}!</h1>
+      <h2>calculator={{$eval(calculator) |number}}</h2>
+
+      <!-- controller -->
+      <div ng-controller="someControllerName">
+            {{user}}
+      </div>
+
+      <!-- directives -->
+      <div ngc-custom="#456"u="first"></div>
+      <div ngc-custom="#153992" u="second"></div>
+      <div ngc-custom="#555" u="last"></div>
+
+
+
+
+    </div>
+    <script>
+        const app=angular.module("myApp",[]);
+        app.controller("someControllerName",($scope, $http)=>{
+            $scope.user="Tonton";
+        })
+        app.directive("ngcCustom",()=>({
+            scope:{u:"@u"},
+            template:'<p>{{u}}</p><iframe src="./template.html" seamless/>',
+            link:(scope,element,attrs)=>{
+                const originalColor="white"
+                element.on("mouseenter",()=>{
+                    const selectedColor=attrs["ngcCustom"];
+                    element[0].setAttribute("style",  `background-color:${selectedColor}`)
+                })
+                element.on("mouseleave",()=>{
+                    const selectedColor=attrs["ngcCustom"];
+                    element[0].setAttribute("style",  `background-color:${originalColor}`)
+                })
+            }
+        }))
+    </script>
+    <!-- Angular JS have some native functions like $eval, $http(like axios), can use pipe "|" to format like(number, currency, uppercase,...etc) or "| orderBy:someVariable" -->
+    <!-- Controller for ng-app ng-controller, is like the hosting function to this piece of code and accessing all subfunctions and variables throuch the nmative $scope object -->
+</body>
+</html>
